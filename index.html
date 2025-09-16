@@ -3,9 +3,775 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Backup - Home</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --gray: #6c757d;
+        }
+        
+        body {
+            background-color: #f5f7fb;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Navigation */
+        nav {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-item {
+            margin-left: 25px;
+        }
+        
+        .nav-link {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        /* Form Styles */
+        .form-container {
+            max-width: 500px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--primary);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-input:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+        
+        /* Card Styles */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        .card-title {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        
+        .card-text {
+            color: var(--gray);
+            margin-bottom: 15px;
+        }
+        
+        /* Search Bar */
+        .search-container {
+            text-align: center;
+            margin: 50px 0;
+        }
+        
+        .search-bar {
+            width: 100%;
+            max-width: 600px;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s;
+        }
+        
+        .search-bar:focus {
+            outline: none;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Call Animation */
+        .call-container {
+            text-align: center;
+            padding: 50px 0;
+        }
+        
+        .call-icon {
+            width: 120px;
+            height: 120px;
+            background-color: var(--success);
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 1.5s infinite;
+        }
+        
+        .call-icon i {
+            font-size: 50px;
+            color: white;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(76, 201, 240, 0.7);
+            }
+            70% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 20px rgba(76, 201, 240, 0);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(76, 201, 240, 0);
+            }
+        }
+        
+        .dialing-text {
+            font-size: 24px;
+            margin-bottom: 30px;
+            color: var(--dark);
+        }
+        
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 40px;
+        }
+        
+        .hero-title {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        
+        .hero-text {
+            font-size: 20px;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+            }
+            
+            .nav-menu {
+                margin-top: 15px;
+            }
+            
+            .nav-item {
+                margin: 0 10px;
+            }
+            
+            .hero-title {
+                font-size: 36px;
+            }
+            
+            .hero-text {
+                font-size: 18px;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+        }
+        
+        /* Page specific styles */
+        .page {
+            display: none;
+            padding: 20px 0 50px;
+        }
+        
+        .active-page {
+            display: block;
+        }
+    </style>
 </head>
 <body>
-    
+    <!-- Navigation -->
+    <nav>
+        <div class="container nav-container">
+            <a href="#" class="logo" onclick="showPage('home')">Backup</a>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="#" class="nav-link" onclick="showPage('home')">Home</a></li>
+                <li class="nav-item"><a href="#" class="nav-link" onclick="showPage('professions')">Professions</a></li>
+                <li class="nav-item"><a href="#" class="nav-link" onclick="showPage('add-profile')">Add Profile</a></li>
+                <li class="nav-item" id="login-nav-item"><a href="#" class="nav-link" onclick="showPage('login')">Login</a></li>
+                <li class="nav-item" id="logout-nav-item" style="display: none;"><a href="#" class="nav-link" onclick="logout()">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Home Page -->
+    <div id="home" class="page active-page">
+        <div class="hero">
+            <div class="container">
+                <h1 class="hero-title">Find Trusted Professionals</h1>
+                <p class="hero-text">Connect with skilled professionals in various fields for all your needs</p>
+                <div class="search-container">
+                    <input type="text" class="search-bar" placeholder="Search for a profession..." id="searchInput">
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 30px;">Popular Professions</h2>
+            <div class="card-grid">
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1551601651-2a8555f1a136?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Doctor" class="card-img">
+                    <div class="card-body">
+                        <h3 class="card-title">Doctor</h3>
+                        <p class="card-text">Medical professionals providing healthcare services and treatments.</p>
+                        <a href="#" class="btn btn-outline" onclick="searchProfession('doctor')">View Doctors</a>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1569864358646-874a57f1232f?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Car Mechanic" class="card-img">
+                    <div class="card-body">
+                        <h3 class="card-title">Car Mechanic</h3>
+                        <p class="card-text">Experts in vehicle repair, maintenance, and diagnostics.</p>
+                        <a href="#" class="btn btn-outline" onclick="searchProfession('car mechanic')">View Mechanics</a>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1586510910406-5eca63d2fdad?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Police" class="card-img">
+                    <div class="card-body">
+                        <h3 class="card-title">Police</h3>
+                        <p class="card-text">Law enforcement officers ensuring public safety and order.</p>
+                        <a href="#" class="btn btn-outline" onclick="searchProfession('police')">View Police</a>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1501820488136-72669149e0d4?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Driver" class="card-img">
+                    <div class="card-body">
+                        <h3 class="card-title">Driver</h3>
+                        <p class="card-text">Professional drivers for personal and commercial transportation.</p>
+                        <a href="#" class="btn btn-outline" onclick="searchProfession('driver')">View Drivers</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Page -->
+    <div id="login" class="page">
+        <div class="container">
+            <div class="form-container">
+                <h2 class="form-title">Login to Your Account</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="firstName" class="form-label">First Name</label>
+                        <input type="text" id="firstName" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="lastName" class="form-label">Last Name</label>
+                        <input type="text" id="lastName" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="profession" class="form-label">Profession</label>
+                        <input type="text" id="profession" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="mobile" class="form-label">Mobile Number</label>
+                        <input type="tel" id="mobile" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" id="password" class="form-input" required>
+                    </div>
+                    
+                    <button type="submit" class="btn" style="width: 100%;">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Profile Page -->
+    <div id="add-profile" class="page">
+        <div class="container">
+            <div class="form-container">
+                <h2 class="form-title">Add Your Professional Profile</h2>
+                <form id="profileForm">
+                    <div class="form-group">
+                        <label for="fullName" class="form-label">Full Name</label>
+                        <input type="text" id="fullName" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="professionType" class="form-label">Profession Type</label>
+                        <select id="professionType" class="form-input" required>
+                            <option value="">Select Profession</option>
+                            <option value="doctor">Doctor</option>
+                            <option value="mechanic">Car Mechanic</option>
+                            <option value="police">Police</option>
+                            <option value="driver">Driver</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" id="email" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone" class="form-label">Phone</label>
+                        <input type="tel" id="phone" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address" class="form-label">Address</label>
+                        <textarea id="address" class="form-input" rows="3" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="experience" class="form-label">Experience (years)</label>
+                        <input type="number" id="experience" class="form-input" min="0" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="organization" class="form-label">Currently Working At</label>
+                        <input type="text" id="organization" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="role" class="form-label">Role / Position</label>
+                        <input type="text" id="role" class="form-input" required>
+                    </div>
+                    
+                    <button type="submit" class="btn" style="width: 100%;">Save Profile</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Professions Page -->
+    <div id="professions" class="page">
+        <div class="container">
+            <h2 style="text-align: center; margin: 30px 0;">Professionals</h2>
+            <div id="professionals-container" class="card-grid">
+                <!-- Professionals will be dynamically added here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Call Page -->
+    <div id="call" class="page">
+        <div class="container">
+            <div class="form-container">
+                <div id="professional-details">
+                    <!-- Professional details will be dynamically added here -->
+                </div>
+                
+                <div class="call-container">
+                    <div class="call-icon">
+                        <i>📞</i>
+                    </div>
+                    <div class="dialing-text" id="dialing-text">Dialing...</div>
+                    <button class="btn" onclick="endCall()">End Call</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize data
+        if (!localStorage.getItem('profiles')) {
+            // Sample data for demo
+            const sampleProfiles = [
+                {
+                    id: 1,
+                    fullName: "Dr. Sarah Johnson",
+                    professionType: "doctor",
+                    email: "sarah.johnson@example.com",
+                    phone: "+1 (555) 123-4567",
+                    address: "123 Medical Center Dr, Boston, MA",
+                    experience: 12,
+                    organization: "Boston General Hospital",
+                    role: "Senior Cardiologist"
+                },
+                {
+                    id: 2,
+                    fullName: "Mike Rodriguez",
+                    professionType: "mechanic",
+                    email: "mike.rodriguez@example.com",
+                    phone: "+1 (555) 987-6543",
+                    address: "456 Auto Repair Ln, Chicago, IL",
+                    experience: 8,
+                    organization: "Precision Auto Care",
+                    role: "Lead Mechanic"
+                },
+                {
+                    id: 3,
+                    fullName: "Officer James Wilson",
+                    professionType: "police",
+                    email: "james.wilson@example.com",
+                    phone: "+1 (555) 456-7890",
+                    address: "789 Public Safety Ave, New York, NY",
+                    experience: 15,
+                    organization: "NYPD",
+                    role: "Detective"
+                },
+                {
+                    id: 4,
+                    fullName: "David Chen",
+                    professionType: "driver",
+                    email: "david.chen@example.com",
+                    phone: "+1 (555) 234-5678",
+                    address: "321 Transportation Blvd, Los Angeles, CA",
+                    experience: 5,
+                    organization: "City Ride Services",
+                    role: "Professional Driver"
+                }
+            ];
+            localStorage.setItem('profiles', JSON.stringify(sampleProfiles));
+        }
+        
+        // DOM elements
+        const searchInput = document.getElementById('searchInput');
+        const loginForm = document.getElementById('loginForm');
+        const profileForm = document.getElementById('profileForm');
+        const professionalsContainer = document.getElementById('professionals-container');
+        const professionalDetails = document.getElementById('professional-details');
+        const dialingText = document.getElementById('dialing-text');
+        const loginNavItem = document.getElementById('login-nav-item');
+        const logoutNavItem = document.getElementById('logout-nav-item');
+        
+        // Check if user is logged in
+        if (localStorage.getItem('loggedIn')) {
+            loginNavItem.style.display = 'none';
+            logoutNavItem.style.display = 'list-item';
+        }
+        
+        // Event listeners
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchProfession(this.value);
+            }
+        });
+        
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Simple login - just store that user is logged in
+            localStorage.setItem('loggedIn', 'true');
+            loginNavItem.style.display = 'none';
+            logoutNavItem.style.display = 'list-item';
+            showPage('home');
+        });
+        
+        profileForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            saveProfile();
+        });
+        
+        // Functions
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active-page');
+            });
+            
+            // Show the requested page
+            document.getElementById(pageId).classList.add('active-page');
+            
+            // If showing professions page, load professionals
+            if (pageId === 'professions') {
+                loadProfessionals();
+            }
+        }
+        
+        function searchProfession(profession) {
+            // Set the search input value
+            searchInput.value = profession;
+            
+            // Show professions page
+            showPage('professions');
+            
+            // Load professionals for this profession
+            loadProfessionals(profession);
+        }
+        
+        function loadProfessionals(profession = '') {
+            // Clear container
+            professionalsContainer.innerHTML = '';
+            
+            // Get profiles from localStorage
+            const profiles = JSON.parse(localStorage.getItem('profiles') || '[]');
+            
+            // Filter by profession if specified
+            let filteredProfiles = profiles;
+            if (profession) {
+                filteredProfiles = profiles.filter(profile => 
+                    profile.professionType.toLowerCase().includes(profession.toLowerCase())
+                );
+            }
+            
+            // Display profiles
+            if (filteredProfiles.length === 0) {
+                professionalsContainer.innerHTML = '<p style="text-align: center; width: 100%;">No professionals found.</p>';
+                return;
+            }
+            
+            filteredProfiles.forEach(profile => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="card-body">
+                        <h3 class="card-title">${profile.fullName}</h3>
+                        <p class="card-text"><strong>Profession:</strong> ${profile.professionType}</p>
+                        <p class="card-text"><strong>Experience:</strong> ${profile.experience} years</p>
+                        <p class="card-text"><strong>Location:</strong> ${profile.address.split(',')[1] || profile.address}</p>
+                        <a href="#" class="btn btn-outline" onclick="viewProfessional(${profile.id})">View Details</a>
+                    </div>
+                `;
+                professionalsContainer.appendChild(card);
+            });
+        }
+        
+        function saveProfile() {
+            // Get form values
+            const profile = {
+                id: Date.now(), // Simple ID generation
+                fullName: document.getElementById('fullName').value,
+                professionType: document.getElementById('professionType').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                address: document.getElementById('address').value,
+                experience: parseInt(document.getElementById('experience').value),
+                organization: document.getElementById('organization').value,
+                role: document.getElementById('role').value
+            };
+            
+            // Get existing profiles
+            const profiles = JSON.parse(localStorage.getItem('profiles') || '[]');
+            
+            // Add new profile
+            profiles.push(profile);
+            
+            // Save back to localStorage
+            localStorage.setItem('profiles', JSON.stringify(profiles));
+            
+            // Reset form
+            document.getElementById('profileForm').reset();
+            
+            // Show success message
+            alert('Profile saved successfully!');
+            
+            // Redirect to home page
+            showPage('home');
+        }
+        
+        function viewProfessional(id) {
+            // Get profiles from localStorage
+            const profiles = JSON.parse(localStorage.getItem('profiles') || '[]');
+            
+            // Find the professional
+            const professional = profiles.find(profile => profile.id === id);
+            
+            if (professional) {
+                // Display professional details
+                professionalDetails.innerHTML = `
+                    <h2 class="form-title">${professional.fullName}</h2>
+                    <div class="form-group">
+                        <label class="form-label">Profession</label>
+                        <p class="form-input" style="background-color: #f8f9fa;">${professional.professionType}</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Contact Details</label>
+                        <p class="form-input" style="background-color: #f8f9fa;">${professional.email}<br>${professional.phone}<br>${professional.address}</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Experience</label>
+                        <p class="form-input" style="background-color: #f8f9fa;">${professional.experience} years</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Current Role & Organization</label>
+                        <p class="form-input" style="background-color: #f8f9fa;">${professional.role} at ${professional.organization}</p>
+                    </div>
+                `;
+                
+                // Show call page
+                showPage('call');
+                
+                // Start call animation
+                startCallAnimation();
+            }
+        }
+        
+        function startCallAnimation() {
+            let count = 0;
+            const texts = ["Dialing...", "Connecting...", "Ringing..."];
+            
+            const interval = setInterval(() => {
+                dialingText.textContent = texts[count % texts.length];
+                count++;
+                
+                // Stop after 3 cycles
+                if (count >= 9) {
+                    clearInterval(interval);
+                    dialingText.textContent = "Call connected";
+                }
+            }, 1000);
+            
+            // Store interval ID to clear it if needed
+            window.callInterval = interval;
+        }
+        
+        function endCall() {
+            // Clear the animation interval
+            if (window.callInterval) {
+                clearInterval(window.callInterval);
+            }
+            
+            // Go back to professions page
+            showPage('professions');
+        }
+        
+        function logout() {
+            // Remove logged in status
+            localStorage.removeItem('loggedIn');
+            
+            // Update nav
+            loginNavItem.style.display = 'list-item';
+            logoutNavItem.style.display = 'none';
+            
+            // Redirect to home
+            showPage('home');
+        }
+    </script>
 </body>
 </html>
